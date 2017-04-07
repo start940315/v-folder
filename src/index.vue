@@ -135,8 +135,8 @@
 
       });
       this.listen('choose', node => {
-        this.store.commit('choose', node).then(res => res);
-      })
+        this.store.commit('choose', node).then(res => this.$emit('choose', res));
+      });
     },
     destroyed () {
       this.distroy();

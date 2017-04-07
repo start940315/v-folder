@@ -238,7 +238,7 @@ export default class Store {
           this.lastChosen.chosen = false;
         }
         this.lastChosen = elem;
-        resolve();
+        resolve(elem.path);
       }
     });
   }
