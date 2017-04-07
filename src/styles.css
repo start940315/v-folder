@@ -8,7 +8,7 @@
   list-style: none;
 }
 .v-branch-body > .v-branch {
-  padding-left: 20px;
+  padding-left: 18px;
 }
 .v-branch > ul {
   margin: 0;
@@ -29,8 +29,8 @@
 .v-node > .fa,
 .v-node > span > .fa,
 .v-leaf > .fa {
-  width: 20px;
-  line-height: 1.5em;
+  width: 18px;
+  line-height: 1.2em;
   color: #0d83e6;
   text-align: center;
   cursor: pointer;
@@ -41,13 +41,14 @@
 }
 
 .v-node > span span,
-.v-leaf > span {
-  padding: 2px 3px;
-}
-.v-node > span span,
 .v-leaf > span,
 i {
+  padding: 2px 3px;
   font-size: 16px !important;
+  line-height: 1.2 !important;
+}
+i {
+  padding: 2px 0;
 }
 
 .v-node .fa:hover,
