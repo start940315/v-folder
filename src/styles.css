@@ -6,6 +6,7 @@
   font-size: 0;
   color: #666;
   list-style: none;
+  text-align: left;
 }
 .v-branch-body > .v-branch {
   padding-left: 18px;
@@ -22,8 +23,11 @@
 .v-node,
 .v-leaf {
   line-height: 1.2em;
-  padding: 0 0 0 20px;
+  padding: 0 0 0 18px;
   vertical-align: middle;
+}
+.v-leaf {
+  margin-left: 18px;
 }
 
 .v-node > .fa,
