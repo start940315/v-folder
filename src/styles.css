@@ -3,7 +3,7 @@
 ---------------------------------------------------------------*/
 .v-branch-body {
   padding: 0;
-  font-size: 16px;
+  font-size: 0;
   color: #666;
   list-style: none;
 }
@@ -21,19 +21,15 @@
 ---------------------------------------------------------------*/
 .v-node,
 .v-leaf {
-  height: 1.5em;
-  line-height: 1.5em;
+  line-height: 1.2em;
   padding: 0 0 0 20px;
   vertical-align: middle;
-  overflow: hidden;
 }
 
 .v-node > .fa,
 .v-node > span > .fa,
 .v-leaf > .fa {
-  float: left;
   width: 20px;
-  height: 1.5em;
   line-height: 1.5em;
   color: #0d83e6;
   text-align: center;
@@ -47,6 +43,11 @@
 .v-node > span span,
 .v-leaf > span {
   padding: 2px 3px;
+}
+.v-node > span span,
+.v-leaf > span,
+i {
+  font-size: 16px !important;
 }
 
 .v-node .fa:hover,
@@ -62,4 +63,7 @@
 .chosen {
   background-color: #f7c0c0;
   border-radius: 3px;
+}
+i:before, span, i {
+  vertical-align: middle;
 }
