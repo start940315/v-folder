@@ -134,6 +134,9 @@
           .catch(e => node.status = 'done');
 
       });
+      this.listen('choose', node => {
+        this.store.commit('choose', node).then(res => res);
+      })
     },
     destroyed () {
       this.distroy();

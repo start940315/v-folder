@@ -113,6 +113,7 @@ function transform$1(data, config, level, path) {
   var branches = data[branch] || [];
   var leafs   = data[leaf] || [];
   var canOpen  = branches.length > 0 || leafs.length > 0;
+  var chosen = data[chosen] || false;
 
   if (!path) {
     path = name === '/' ? name : ("/" + name);
@@ -133,6 +134,7 @@ function transform$1(data, config, level, path) {
       name: leaf,
       type: 'leaf',
       check: check,
+      chosen: chosen,
       level: (level + "." + i),
       path: (path + "/" + leaf)
     };
@@ -145,7 +147,7 @@ function transform$1(data, config, level, path) {
     type: 'branch',
     level: level,
     path: path,
-    node: { name: name, open: level == '0' || open, canOpen: canOpen, check: check, level: level, path: path, type: 'node', status: status },
+    node: { name: name, open: level == '0' || open, canOpen: canOpen, check: check, level: level, path: path, type: 'node', status: status, chosen: chosen },
     branches: branches,
     leafs: leafs,
   };
@@ -165,7 +167,9 @@ var Store = function Store(data, conf) {
   var path = data.path || data[this.conf.node] || '/';
   var name = path.split('/').filter(function (s) { return !!s; }).slice(-1)[0] || data.name;
   data.name = name;
+  data.chosen = false;
   this.dataStore = transform$1(data, this.conf, '0', path);
+  this.lastChosen = null;
 };
 
 /**
@@ -378,7 +382,6 @@ Store.prototype.commit = function commit (action, elem) {
 
   return new Promise(function (resolve, reject) {
     var isNode = elem.type === 'node';
-      
     if (action === 'change') {
         this$1[isNode ? 'checkNode' : 'checkLeaf'](elem);
         return resolve(this$1.getPathResult());
@@ -393,6 +396,15 @@ Store.prototype.commit = function commit (action, elem) {
       } else {
         reject();
       }
+    }
+      
+    if (action === 'choose') {
+      elem.chosen = true;
+      if (this$1.lastChosen) {
+        this$1.lastChosen.chosen = false;
+      }
+      this$1.lastChosen = elem;
+      resolve();
     }
   });
 };
@@ -456,7 +468,7 @@ var classNames = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-node"},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',{on:{"click":function($event){_vm.notify('change');}}},[_c('i',{staticClass:"fa",class:_vm.checkboxClass}),_vm._v(" "+_vm._s(_vm.data.name))])])},staticRenderFns: [],
+var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-node"},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',[_c('i',{staticClass:"fa",class:_vm.checkboxClass,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])])},staticRenderFns: [],
   name: 'v-node',
   mixins: [EventMixin],
   props: {
@@ -484,6 +496,9 @@ var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
     },
     checkboxClass: function checkboxClass() {
       return classNames[this.data.check + 1];
+    },
+    isChosen: function isChosen() {
+      return this.data.chosen ? "chosen" : "";
     }
   }
 };
@@ -493,7 +508,7 @@ var classNames$1 = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-leaf",on:{"click":function($event){_vm.notify('change');}}},[_c('i',{staticClass:"fa",class:_vm.className}),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
+var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-leaf"},[_c('i',{staticClass:"fa",class:_vm.className,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
   name: 'v-leaf',
   mixins: [EventMixin],
   props: {
@@ -509,6 +524,9 @@ var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
   computed: {
     className: function className() {
       return classNames$1[this.data.check + 1];
+    },
+    isChosen: function isChosen() {
+      return this.data.chosen ? "chosen" : "";
     }
   }
 };
@@ -532,7 +550,7 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
   }
 };
 
-__$styleInject(".v-branch-body{padding:0;font-size:16px;color:#666;list-style:none}.v-branch-body>.v-branch{padding-left:20px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{height:1.5em;line-height:1.5em;padding:0 0 0 20px;vertical-align:middle;overflow:hidden}.v-leaf{margin:0 0 0 20px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{float:left;width:20px;height:1.5em;line-height:1.5em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{float:left;cursor:pointer}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}",undefined);
+__$styleInject(".v-branch-body{padding:0;font-size:16px;color:#666;list-style:none}.v-branch-body>.v-branch{padding-left:20px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{height:1.5em;line-height:1.5em;padding:0 0 0 20px;vertical-align:middle;overflow:hidden}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{float:left;width:20px;height:1.5em;line-height:1.5em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span{padding:2px 3px}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:#f7c0c0;border-radius:3px}",undefined);
 
 var uid = 0;
 
@@ -664,6 +682,9 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
         })
         .catch(function (e) { return node.status = 'done'; });
 
+    });
+    this.listen('choose', function (node) {
+      this$1.store.commit('choose', node).then(function (res) { return res; });
     });
   },
   destroyed: function destroyed () {

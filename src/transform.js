@@ -14,6 +14,7 @@ function transform(data = {}, config, level, path = "") {
   let branches = data[branch] || [];
   let leafs   = data[leaf] || [];
   let canOpen  = branches.length > 0 || leafs.length > 0;
+  let chosen = data[chosen] || false;
 
   if (!path) {
     path = name === '/' ? name : `/${name}`;
@@ -34,6 +35,7 @@ function transform(data = {}, config, level, path = "") {
       name: leaf,
       type: 'leaf',
       check,
+      chosen,
       level: `${level}.${i}`,
       path: `${path}/${leaf}`
     };
@@ -46,7 +48,7 @@ function transform(data = {}, config, level, path = "") {
     type: 'branch',
     level,
     path,
-    node: { name, open: level == '0' || open, canOpen, check, level, path, type: 'node', status },
+    node: { name, open: level == '0' || open, canOpen, check, level, path, type: 'node', status, chosen },
     branches,
     leafs,
   };

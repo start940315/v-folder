@@ -1,7 +1,7 @@
 <template>
-  <li class="v-leaf" @click="notify('change')" :key="data.level">
-    <i class="fa" :class="className"></i>
-    <span>{{data.name}}</span>
+  <li class="v-leaf" :key="data.level">
+    <i class="fa" :class="className" @click="notify('change')"></i>
+    <span :class="isChosen" @click="notify('choose')">{{data.name}}</span>
   </li>
 </template>
 
@@ -30,6 +30,9 @@
     computed: {
       className() {
         return classNames[this.data.check + 1];
+      },
+      isChosen() {
+        return this.data.chosen ? "chosen" : "";
       }
     }
   };

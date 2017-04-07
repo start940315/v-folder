@@ -27,9 +27,6 @@
   vertical-align: middle;
   overflow: hidden;
 }
-.v-leaf {
-  margin: 0 0 0 20px;
-}
 
 .v-node > .fa,
 .v-node > span > .fa,
@@ -44,8 +41,12 @@
 }
 .v-node > span, 
 .v-leaf > span {
-  float: left;
   cursor: pointer;
+}
+
+.v-node > span span,
+.v-leaf > span {
+  padding: 2px 3px;
 }
 
 .v-node .fa:hover,
@@ -57,4 +58,8 @@
 }
 .v-node > .cursor-progress {
   cursor: progress;
+}
+.chosen {
+  background-color: #f7c0c0;
+  border-radius: 3px;
 }

@@ -5,9 +5,9 @@
       :class="folderClass"
       @click="notify('unfold')"
     ></i>
-    <span @click="notify('change')">
-      <i class="fa" :class="checkboxClass"></i>
-      {{data.name}}
+    <span>
+      <i class="fa" :class="checkboxClass" @click="notify('change')"></i>
+      <span :class="isChosen" @click="notify('choose')">{{data.name}}</span>
     </span>
   </li>
 </template>
@@ -49,6 +49,9 @@
       },
       checkboxClass() {
         return classNames[this.data.check + 1];
+      },
+      isChosen() {
+        return this.data.chosen ? "chosen" : "";
       }
     }
   };

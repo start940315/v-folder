@@ -17,7 +17,9 @@ export default class Store {
     let path = data.path || data[this.conf.node] || '/';
     let name = path.split('/').filter(s => !!s).slice(-1)[0] || data.name;
     data.name = name;
+    data.chosen = false;
     this.dataStore = transform(data, this.conf, '0', path);
+    this.lastChosen = null;
   }
 
   /**
@@ -214,7 +216,6 @@ export default class Store {
   commit(action, elem) {
     return new Promise((resolve, reject) => {
       let isNode = elem.type === 'node';
-      
       if (action === 'change') {
           this[isNode ? 'checkNode' : 'checkLeaf'](elem);
           return resolve(this.getPathResult());
@@ -229,6 +230,15 @@ export default class Store {
         } else {
           reject();
         }
+      }
+      
+      if (action === 'choose') {
+        elem.chosen = true;
+        if (this.lastChosen) {
+          this.lastChosen.chosen = false;
+        }
+        this.lastChosen = elem;
+        resolve();
       }
     });
   }
