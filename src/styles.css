@@ -66,8 +66,7 @@ i {
   cursor: progress;
 }
 .chosen {
-  background-color: #f7c0c0;
-  border-radius: 3px;
+  color: #ffffff;
 }
 i:before, span, i {
   vertical-align: middle;
