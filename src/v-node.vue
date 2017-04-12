@@ -7,7 +7,7 @@
     ></i>
     <span>
       <i class="fa" :class="checkboxClass" @click="notify('change')"></i>
-      <span :class="isChosen" @click="notify('choose')">{{data.name}}</span>
+      <span :class="isChosen" @click="notify('choose')" :title="data.name">{{data.name}}</span>
     </span>
   </li>
 </template>

@@ -22,9 +22,12 @@
 ---------------------------------------------------------------*/
 .v-node,
 .v-leaf {
+  height: 1.4em;
   line-height: 1.4em;
   padding: 0 0 0 18px;
   vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .v-leaf {
   margin-left: 18px;
