@@ -474,7 +474,7 @@ var classNames = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-node"},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',[_c('i',{staticClass:"fa",class:_vm.checkboxClass,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])])},staticRenderFns: [],
+var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,class:_vm.isChosen},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',[_c('i',{staticClass:"fa",class:_vm.checkboxClass,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])])},staticRenderFns: [],
   name: 'v-node',
   mixins: [EventMixin],
   props: {
@@ -504,7 +504,7 @@ var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
       return classNames[this.data.check + 1];
     },
     isChosen: function isChosen() {
-      return this.data.chosen ? "chosen" : "";
+      return (this.data.chosen ? "chosen" : "") + "v-node";
     }
   }
 };
@@ -514,7 +514,7 @@ var classNames$1 = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-leaf"},[_c('i',{staticClass:"fa",class:_vm.className,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
+var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,class:_vm.isChosen},[_c('i',{staticClass:"fa",class:_vm.className,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
   name: 'v-leaf',
   mixins: [EventMixin],
   props: {
@@ -532,7 +532,7 @@ var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
       return classNames$1[this.data.check + 1];
     },
     isChosen: function isChosen() {
-      return this.data.chosen ? "chosen" : "";
+      return (this.data.chosen ? "chosen" : "")+"v-leaf";
     }
   }
 };
@@ -556,7 +556,7 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
   }
 };
 
-__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{height:1.4em;line-height:1.4em;padding:0 0 0 18px;vertical-align:middle;overflow:hidden;text-overflow:ellipsis}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;line-height:1.4em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{padding:2px 3px;font-size:16px!important;line-height:1.4!important}i{padding:2px 0}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{color:#fff}i,i:before,span{vertical-align:middle}",undefined);
+__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{line-height:1.4em;padding:0 0 0 18px;vertical-align:middle}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;line-height:1.4em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{font-size:16px!important;line-height:1.4!important}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:hsla(0,0%,100%,.2)}.chosen span{color:#fff}i,i:before,span{vertical-align:middle}",undefined);
 
 var uid = 0;
 

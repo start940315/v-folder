@@ -1,7 +1,7 @@
 <template>
-  <li class="v-leaf" :key="data.level">
+  <li :class="isChosen" :key="data.level">
     <i class="fa" :class="className" @click="notify('change')"></i>
-    <span :class="isChosen" @click="notify('choose')" :title="data.name">{{data.name}}</span>
+    <span @click="notify('choose')" :title="data.name">{{data.name}}</span>
   </li>
 </template>
 
@@ -32,7 +32,7 @@
         return classNames[this.data.check + 1];
       },
       isChosen() {
-        return this.data.chosen ? "chosen" : "";
+        return (this.data.chosen ? "chosen" : "")+"v-leaf";
       }
     }
   };

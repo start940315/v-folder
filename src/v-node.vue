@@ -1,5 +1,5 @@
 <template>
-  <li class="v-node" :key="data.level">
+  <li :class="isChosen" :key="data.level">
     <i
       class="fa"
       :class="folderClass"
@@ -7,7 +7,7 @@
     ></i>
     <span>
       <i class="fa" :class="checkboxClass" @click="notify('change')"></i>
-      <span :class="isChosen" @click="notify('choose')" :title="data.name">{{data.name}}</span>
+      <span @click="notify('choose')" :title="data.name">{{data.name}}</span>
     </span>
   </li>
 </template>
@@ -51,7 +51,7 @@
         return classNames[this.data.check + 1];
       },
       isChosen() {
-        return this.data.chosen ? "chosen" : "";
+        return (this.data.chosen ? "chosen" : "") + "v-node";
       }
     }
   };
