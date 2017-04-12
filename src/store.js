@@ -218,7 +218,10 @@ export default class Store {
       let isNode = elem.type === 'node';
       if (action === 'change') {
           this[isNode ? 'checkNode' : 'checkLeaf'](elem);
-          return resolve(this.getPathResult());
+          return resolve({
+            path: this.getPathResult(),
+            id: this.conf.id
+          });
       }
 
       if (action === 'unfold' && isNode) {
@@ -238,7 +241,10 @@ export default class Store {
           this.lastChosen.chosen = false;
         }
         this.lastChosen = elem;
-        resolve(elem.path);
+        resolve({
+          path: elem.path,
+          id: this.conf.id
+        });
       }
     });
   }
