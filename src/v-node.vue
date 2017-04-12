@@ -51,7 +51,7 @@
         return classNames[this.data.check + 1];
       },
       isChosen() {
-        return (this.data.chosen ? "chosen" : "") + "v-node";
+        return (this.data.chosen ? "chosen " : "") + "v-node";
       }
     }
   };

@@ -25,6 +25,8 @@
   line-height: 1.4em;
   padding: 0 0 0 18px;
   vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .v-leaf {
   margin-left: 18px;

@@ -32,7 +32,7 @@
         return classNames[this.data.check + 1];
       },
       isChosen() {
-        return (this.data.chosen ? "chosen" : "")+"v-leaf";
+        return (this.data.chosen ? "chosen " : "")+"v-leaf";
       }
     }
   };
