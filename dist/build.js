@@ -566,12 +566,11 @@ function adjustWidth (el, self) {
   var gcs = getComputedStyle;
   var pi = parseInt;
   var getHeight = function (el) { return pi(gcs(el).height); };
-  var minWidth = pi(gcs(el).width);
+  var minWidth = 0;
   var maxWidth = 500;
   var standardHeight = getHeight(el);
   var center = (minWidth+maxWidth)/2;
   el.style.width = center+"px";
-  console.log(111, minWidth);
   function setWidth () {
     var temp = getHeight(el);
     if( temp < standardHeight ) {
@@ -582,8 +581,8 @@ function adjustWidth (el, self) {
     }
     if(maxWidth-minWidth > 1) {
       center = (minWidth+maxWidth)/2;
+      el.style.width = center+"px";
       self.$nextTick(setWidth);
-      console.log(center, minWidth, maxWidth);
     }
   }
   self.$nextTick(setWidth);
