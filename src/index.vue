@@ -14,6 +14,32 @@
   import styles from './styles.css';
 
   let uid = 0;
+  
+  function adjustWidth (el, self) {
+    var gcs = getComputedStyle;
+    var pi = parseInt;
+    var getHeight = (el) => pi(gcs(el).height);
+    var minWidth = pi(gcs(el).width);
+    var maxWidth = 500;
+    var standardHeight = getHeight(el);
+    var center = (minWidth+maxWidth)/2;
+    el.style.width = center+"px";
+    function setWidth () {
+      var temp = getHeight(el);
+      if( temp < standardHeight ) {
+        standardHeight = temp;
+        minWidth = center;
+      } else {
+        maxWidth = center;
+      }
+      if(maxWidth-minWidth > 1) {
+        center = (minWidth+maxWidth)/2;
+        self.$nextTick(setWidth);
+        console.log(center);
+      }
+    }
+    this.$nextTick(setWidth);
+  }
 
   export default {
     name: 'v-folder',
@@ -119,6 +145,7 @@
       this.listen('unfold', node => {
         if (node.open && node.canOpen) {
           node.open =! node.open;
+          adjustWidth(this.$refs["container"], this);
           return;
         }
 
@@ -151,32 +178,7 @@
     },
     
     mounted() {
-      console.log(this.$refs)
-      var el = this.$refs["container"];
-      var gcs = getComputedStyle;
-      var pi = parseInt;
-      var getHeight = (el) => pi(gcs(el).height);
-      var minWidth = pi(gcs(el).width);
-      var maxWidth = 500;
-      var standardHeight = getHeight(el);
-      var self = this;
-      var center = (minWidth+maxWidth)/2;
-      el.style.width = center+"px";
-      function setWidth () {
-        var temp = getHeight(el);
-        if( temp < standardHeight ) {
-          standardHeight = temp;
-          minWidth = center;
-        } else {
-          maxWidth = center;
-        }
-        if(maxWidth-minWidth > 1) {
-          center = (minWidth+maxWidth)/2;
-          self.$nextTick(setWidth);
-          console.log(center);
-        }
-      }
-      this.$nextTick(setWidth);
+      adjustWidth(this.$refs["container"], this);
     },
     
     destroyed () {
