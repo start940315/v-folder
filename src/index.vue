@@ -145,6 +145,7 @@
       this.listen('unfold', node => {
         if (node.open && node.canOpen) {
           node.open =! node.open;
+          console.log("in");
           adjustWidth(this.$refs["container"], this);
           return;
         }

@@ -702,6 +702,7 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     this.listen('unfold', function (node) {
       if (node.open && node.canOpen) {
         node.open =! node.open;
+        console.log("in");
         adjustWidth(this$1.$refs["container"], this$1);
         return;
       }
