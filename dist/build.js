@@ -577,7 +577,7 @@ var uid = 0;
 //      console.log(temp, minWidth, maxWidth, center, standardHeight)
       if( temp > minHeight ) {
         minWidth = center;
-      } else if(temp < minHeight) {
+      } else {
         if( temp < standardHeight ) {
           minWidth = center;
         } else {
