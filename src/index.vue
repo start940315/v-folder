@@ -1,8 +1,8 @@
 <template>
   <ul class="v-branch-body">
-    <v-node :canChosen="canChosen" :data="node" :uid="uid"></v-node>
-    <v-branch v-show="node.open" v-for="branch in branches" :canChosen="canChosen" :data="branch" :uid="uid"></v-branch>
-    <v-leaf v-show="node.open" v-for="leaf in leafs" :canChosen="canChosen" :data="leaf" :uid="uid"></v-leaf>
+    <v-node :can-chosen="canChosen" :data="node" :uid="uid"></v-node>
+    <v-branch v-show="node.open" v-for="branch in branches" :can-chosen="canChosen" :data="branch" :uid="uid"></v-branch>
+    <v-leaf v-show="node.open" v-for="leaf in leafs" :can-chosen="canChosen" :data="leaf" :uid="uid"></v-leaf>
   </ul>
 </template>
 <script>
