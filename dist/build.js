@@ -568,17 +568,22 @@ var uid = 0;
     var getHeight = function (el) { return pi(gcs(el).height); };
     var minWidth = 0;
     var maxWidth = 500;
-    var standardHeight = getHeight(el);
-    var center = (minWidth+maxWidth)/2;
     el.style.width = maxWidth+"px";
+    var standardHeight = 0;
+    var center = (minWidth+maxWidth)/2;
+    var minHeight = 10000000000;
     function setWidth () {
       var temp = getHeight(el);
 //      console.log(temp, minWidth, maxWidth, center, standardHeight)
-      if( temp > standardHeight ) {
+      if( temp > minHeight ) {
         minWidth = center;
-      } else {
-        standardHeight = temp;
-        maxWidth = center;
+      } else if(temp < minHeight) {
+        if( temp < standardHeight ) {
+          minWidth = center;
+        } else {
+          maxWidth = center;
+        }
+        minHeight = temp;
       }
       if(maxWidth-minWidth > 1) {
         center = (minWidth+maxWidth)/2;
@@ -586,7 +591,11 @@ var uid = 0;
         self.$nextTick(setWidth);
       }
     }
-    self.$nextTick(setWidth);
+    self.$nextTick(function () {
+      standardHeight = getHeight(el);
+      el.style.width = center+"px";
+      self.$nextTick(setWidth);
+    });
   }
 
   var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],

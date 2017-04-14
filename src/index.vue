@@ -21,17 +21,22 @@
     var getHeight = (el) => pi(gcs(el).height);
     var minWidth = 0;
     var maxWidth = 500;
-    var standardHeight = getHeight(el);
-    var center = (minWidth+maxWidth)/2;
     el.style.width = maxWidth+"px";
+    var standardHeight = 0;
+    var center = (minWidth+maxWidth)/2;
+    var minHeight = 10000000000;
     function setWidth () {
       var temp = getHeight(el);
 //      console.log(temp, minWidth, maxWidth, center, standardHeight)
-      if( temp > standardHeight ) {
+      if( temp > minHeight ) {
         minWidth = center;
-      } else {
-        standardHeight = temp;
-        maxWidth = center;
+      } else if(temp < minHeight) {
+        if( temp < standardHeight ) {
+          minWidth = center;
+        } else {
+          maxWidth = center;
+        }
+        minHeight = temp;
       }
       if(maxWidth-minWidth > 1) {
         center = (minWidth+maxWidth)/2;
@@ -39,7 +44,11 @@
         self.$nextTick(setWidth);
       }
     }
-    self.$nextTick(setWidth);
+    self.$nextTick(() => {
+      standardHeight = getHeight(el);
+      el.style.width = center+"px";
+      self.$nextTick(setWidth);
+    })
   }
 
   export default {
