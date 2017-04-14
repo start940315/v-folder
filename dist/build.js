@@ -562,182 +562,180 @@ __$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;
 
 var uid = 0;
 
-var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
-  name: 'v-folder',
-  mixins: [EventMixin],
-  props: {
-    data: Object,
-    ajax: Object,
-    conf: Object,
-    nowChosen: {
-      type: [String, Number],
-      required: true
-    }
-  },
-  components: {
-    'v-node': VNode,
-    'v-leaf': VLeaf,
-    'v-branch': VBranch
-  },
-  watch: {
-    data: function data(newVal, oldVal) {
-      var nameKey = this.conf && this.conf.node || 'name';
-      if (newVal[nameKey] !== oldVal[nameKey]) {
-        this.store = new Store(newVal, this.conf);
+  var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
+    name: 'v-folder',
+    mixins: [EventMixin],
+    props: {
+      data: Object,
+      ajax: Object,
+      conf: Object,
+      nowChosen: {
+        type: [String, Number],
+        required: true
       }
-    }
-  },
-  data: function data() {
-    console.log(uid);
-    return {
-      uid: uid++,
-      store: new Store(this.data, this.conf)
-    };
-  },
-
-  computed: {
-    root: function root() {
-      return this.store.dataStore;
     },
-    branches: function branches() {
-      return this.root.branches;
+    components: {
+      'v-node': VNode,
+      'v-leaf': VLeaf,
+      'v-branch': VBranch
     },
-    leafs: function leafs() {
-      return this.root.leafs;
-    },
-    node: function node() {
-      return this.root.node;
-    },
-    canChosen: function canChosen() {
-      return this.nowChosen === this.uid;
-    }
-  },
-  
-  methods: {
-    resTransform: function resTransform(data, node) {
-      var conf = this.conf || {};
-      var dirKey  = conf['branch'] || 'dirs';
-      var fileKey = conf['leaf'] || 'files';
-      var nameKey = conf['node'] || 'name';
-
-      data[nameKey] = node.name;
-      data[dirKey]  = data[dirKey].map(function (d) { return (( obj = {}, obj[nameKey] = d, obj ))
-        var obj; });
-      return data;
-    },
-
-    getReqConf: function getReqConf(node) {
-      var reqConf = this.ajax || {};
-      var url = reqConf.url;
-      var method = reqConf.method;
-      var data = reqConf.data;
-      var params = reqConf.params;
-      var pathAs = reqConf.pathAs;
-      var headers = reqConf.headers;
-
-      if (method || method.toUpperCase() === 'GET') {
-        reqConf.params = (params || {});
-        reqConf.params[pathAs] = node.path;
-      } else {
-        reqConf.data = (data || {});
-        reqConf.data[pathAs] = node.path;
+    watch: {
+      data: function data(newVal, oldVal) {
+        var nameKey = this.conf && this.conf.node || 'name';
+        if (newVal[nameKey] !== oldVal[nameKey]) {
+          this.store = new Store(newVal, this.conf);
+        }
       }
-
-      reqConf.method = method || 'GET';
-      reqConf.headers = headers || {};
-
-      return reqConf;
+    },
+    data: function data() {
+      console.log(uid);
+      return {
+        uid: uid++,
+        store: new Store(this.data, this.conf)
+      };
     },
 
-    request: function request(node) {
+    computed: {
+      root: function root() {
+        return this.store.dataStore;
+      },
+      branches: function branches() {
+        return this.root.branches;
+      },
+      leafs: function leafs() {
+        return this.root.leafs;
+      },
+      node: function node() {
+        return this.root.node;
+      },
+      canChosen: function canChosen() {
+        return this.nowChosen === this.uid;
+      }
+    },
+    
+    methods: {
+      resTransform: function resTransform(data, node) {
+        var conf = this.conf || {};
+        var dirKey  = conf['branch'] || 'dirs';
+        var fileKey = conf['leaf'] || 'files';
+        var nameKey = conf['node'] || 'name';
+
+        data[nameKey] = node.name;
+        data[dirKey]  = data[dirKey].map(function (d) { return (( obj = {}, obj[nameKey] = d, obj ))
+          var obj; });
+        return data;
+      },
+
+      getReqConf: function getReqConf(node) {
+        var reqConf = this.ajax || {};
+        var url = reqConf.url;
+        var method = reqConf.method;
+        var data = reqConf.data;
+        var params = reqConf.params;
+        var pathAs = reqConf.pathAs;
+        var headers = reqConf.headers;
+
+        if (method || method.toUpperCase() === 'GET') {
+          reqConf.params = (params || {});
+          reqConf.params[pathAs] = node.path;
+        } else {
+          reqConf.data = (data || {});
+          reqConf.data[pathAs] = node.path;
+        }
+
+        reqConf.method = method || 'GET';
+        reqConf.headers = headers || {};
+
+        return reqConf;
+      },
+
+      request: function request(node) {
+        var this$1 = this;
+
+        if (!this.ajax) {
+          return Promise.reject('ajax:false');
+        }
+
+        var process = this.ajax.process || (function (res) { return res; });
+
+        return this.$http(this.getReqConf(node))
+          .then(function (res) {
+            var data = process(res.data);
+            return this$1.resTransform(data, node);
+          });
+      }
+    },
+
+    created: function created() {
       var this$1 = this;
 
-      if (!this.ajax) {
-        return Promise.reject('ajax:false');
-      }
+      this.listen('change', function (node) {
+        this$1.store.commit('change', node).then(function (res) { return this$1.$emit('change', res); });
+      });
 
-      var process = this.ajax.process || (function (res) { return res; });
-
-      return this.$http(this.getReqConf(node))
-        .then(function (res) {
-          var data = process(res.data);
-          return this$1.resTransform(data, node);
-        });
-    }
-  },
-
-  created: function created() {
-    var this$1 = this;
-
-    this.listen('change', function (node) {
-      this$1.store.commit('change', node).then(function (res) { return this$1.$emit('change', res); });
-    });
-
-    this.listen('unfold', function (node) {
-      if (node.open && node.canOpen) {
-        node.open =! node.open;
-        return;
-      }
-
-      this$1.store.commit('unfold', node)
-        .then(function () {
-
-          this$1.request(node)
-          .then(function (data) {
-            if (data) {
-              this$1.store.merge(data, node);
-            } else {
-              throw 'empty';
-            }
-          })
-          .catch(function (e) {
-            node.status = 'empty';
-            window.console && console.error(e);
-          });
-
-        })
-        .catch(function (e) { return node.status = 'done'; });
-
-    });
-    this.listen('choose', function (node) {
-      this$1.store.commit('choose', {
-        node: node,
-        nowChosen: this$1.nowChosen
-      }).then(function (res) { return this$1.$emit('choose', res); });
-    });
-  },
-  
-  mounted: function mounted() {
-    var this$1 = this;
-
-    this.$nextTick(function () {
-      var el = this$1.$refs("container");
-      var gcs = getComputedStyle;
-      var pi = parseInt;
-      var getHeight = function (el) { return pi(gcs(el).height); };
-      var minWidth = pi(gcs(el).width);
-      var maxWidth = 500;
-      var center = (minWidth+maxWidth)/2;
-      
-      var standardHeight = getHeight(el);
-      do {
-        el.style.width = center+"px";
-        var temp = getHeight(el);
-        if( temp < standardHeight ) {
-          minWidth = center;
-        } else {
-          maxWidth = center;
+      this.listen('unfold', function (node) {
+        if (node.open && node.canOpen) {
+          node.open =! node.open;
+          return;
         }
-        console.log(center);
-        center = (minWidth+maxWidth)/2;
-      } while (maxWidth-minWidth > 4);
-    });
-  },
-  
-  destroyed: function destroyed () {
-    this.distroy();
-  }
-};
+
+        this$1.store.commit('unfold', node)
+          .then(function () {
+
+            this$1.request(node)
+            .then(function (data) {
+              if (data) {
+                this$1.store.merge(data, node);
+              } else {
+                throw 'empty';
+              }
+            })
+            .catch(function (e) {
+              node.status = 'empty';
+              window.console && console.error(e);
+            });
+
+          })
+          .catch(function (e) { return node.status = 'done'; });
+
+      });
+      this.listen('choose', function (node) {
+        this$1.store.commit('choose', {
+          node: node,
+          nowChosen: this$1.nowChosen
+        }).then(function (res) { return this$1.$emit('choose', res); });
+      });
+    },
+    
+    mounted: function mounted() {
+//      this.$nextTick(() => {
+//        var el = this.$refs("container");
+//        var gcs = getComputedStyle;
+//        var pi = parseInt;
+//        var getHeight = (el) => pi(gcs(el).height);
+//        var minWidth = pi(gcs(el).width);
+//        var maxWidth = 500;
+//        var center = (minWidth+maxWidth)/2;
+//
+//        var standardHeight = getHeight(el);
+//        do {
+//          el.style.width = center+"px";
+//          var temp = getHeight(el);
+//          if( temp < standardHeight ) {
+//            minWidth = center;
+//          } else {
+//            maxWidth = center;
+//          }
+//          console.log(center);
+//          center = (minWidth+maxWidth)/2;
+//        } while (maxWidth-minWidth > 4);
+//      })
+    },
+    
+    destroyed: function destroyed () {
+      this.distroy();
+    }
+  };
 
 var eventMix = function (Vue) {
   var hub = new Vue();
