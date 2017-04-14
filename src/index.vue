@@ -151,29 +151,30 @@
     },
     
     mounted() {
-      this.$nextTick(() => {
-        console.log(this.$refs)
-        var el = this.$refs["container"];
-        var gcs = getComputedStyle;
-        var pi = parseInt;
-        var getHeight = (el) => pi(gcs(el).height);
-        var minWidth = pi(gcs(el).width);
-        var maxWidth = 500;
-        var center = (minWidth+maxWidth)/2;
-        
-        var standardHeight = getHeight(el);
-        do {
-          el.style.width = center+"px";
-          var temp = getHeight(el);
-          if( temp < standardHeight ) {
-            minWidth = center;
-          } else {
-            maxWidth = center;
-          }
-          console.log(center);
-          center = (minWidth+maxWidth)/2;
-        } while (maxWidth-minWidth > 4);
-      })
+      console.log(this.$refs)
+      var el = this.$refs["container"];
+      var gcs = getComputedStyle;
+      var pi = parseInt;
+      var getHeight = (el) => pi(gcs(el).height);
+      var minWidth = pi(gcs(el).width);
+      var maxWidth = 500;
+      var standardHeight = getHeight(el);
+      var self = this;
+      var center = (minWidth+maxWidth)/2;
+      el.style.width = center+"px";
+      function setWidth () {
+        var temp = getHeight(el);
+        if( temp < standardHeight ) {
+          standardHeight = temp;
+          minWidth = center;
+        } else {
+          maxWidth = center;
+        }
+        center = (minWidth+maxWidth)/2;
+        self.$nextTick(setWidth);
+        console.log(center);
+      }
+      this.$nextTick(setWidth);
     },
     
     destroyed () {
