@@ -36,7 +36,7 @@
       if(maxWidth-minWidth > 1) {
         center = (minWidth+maxWidth)/2;
         self.$nextTick(setWidth);
-        console.log(center);
+        console.log(center, minWidth, maxWidth);
       }
     }
     self.$nextTick(setWidth);
