@@ -727,9 +727,11 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
       } else {
         maxWidth = center;
       }
-      center = (minWidth+maxWidth)/2;
-      self.$nextTick(setWidth);
-      console.log(center);
+      if(maxWidth-minWidth > 1) {
+        center = (minWidth+maxWidth)/2;
+        self.$nextTick(setWidth);
+        console.log(center);
+      }
     }
     this.$nextTick(setWidth);
   },
