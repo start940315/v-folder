@@ -711,7 +711,8 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     var this$1 = this;
 
     this.$nextTick(function () {
-      var el = this$1.$refs("container");
+      console.log(this$1.$refs);
+      var el = this$1.$refs["container"];
       var gcs = getComputedStyle;
       var pi = parseInt;
       var getHeight = function (el) { return pi(gcs(el).height); };

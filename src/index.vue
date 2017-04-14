@@ -152,7 +152,8 @@
     
     mounted() {
       this.$nextTick(() => {
-        var el = this.$refs("container");
+        console.log(this.$refs)
+        var el = this.$refs["container"];
         var gcs = getComputedStyle;
         var pi = parseInt;
         var getHeight = (el) => pi(gcs(el).height);
