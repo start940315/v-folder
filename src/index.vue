@@ -26,12 +26,12 @@
     el.style.width = center+"px";
     function setWidth () {
       var temp = getHeight(el);
-      console.log(temp, minWidth, maxWidth, center, standardHeight)
+//      console.log(temp, minWidth, maxWidth, center, standardHeight)
       if( temp < standardHeight ) {
         standardHeight = temp;
-        minWidth = center;
-      } else {
         maxWidth = center;
+      } else {
+        minWidth = center;
       }
       if(maxWidth-minWidth > 1) {
         center = (minWidth+maxWidth)/2;
