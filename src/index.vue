@@ -38,7 +38,7 @@
         console.log(center);
       }
     }
-    this.$nextTick(setWidth);
+    self.$nextTick(setWidth);
   }
 
   export default {
