@@ -577,6 +577,7 @@ var uid = 0;
       if( temp > standardHeight ) {
         minWidth = center;
       } else {
+        standardHeight = temp;
         maxWidth = center;
       }
       if(maxWidth-minWidth > 1) {
