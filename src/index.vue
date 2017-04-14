@@ -1,5 +1,5 @@
 <template>
-  <ul class="v-branch-body">
+  <ul ref="container" class="v-branch-body">
     <v-node :can-chosen="canChosen" :data="node" :uid="uid"></v-node>
     <v-branch v-show="node.open" v-for="branch in branches" :can-chosen="canChosen" :data="branch" :uid="uid"></v-branch>
     <v-leaf v-show="node.open" v-for="leaf in leafs" :can-chosen="canChosen" :data="leaf" :uid="uid"></v-leaf>
@@ -149,6 +149,31 @@
         }).then(res => this.$emit('choose', res));
       });
     },
+    
+    mounted() {
+      this.$nextTick(() => {
+        var el = this.$refs("container");
+        var gcs = getComputedStyle;
+        var pi = parseInt;
+        var getHeight = (el) => pi(gcs(el).height);
+        var minWidth = pi(gcs(el).width);
+        var maxWidth = 500;
+        var center = (minWidth+maxWidth)/2;
+        
+        var standardHeight = getHeight(el);
+        do {
+          el.style.width = center+"px";
+          var temp = getHeight(el);
+          if( temp < standardHeight ) {
+            minWidth = center;
+          } else {
+            maxWidth = center;
+          }
+          center = (minWidth+maxWidth)/2;
+        } while (maxWidth-minWidth > 4);
+      })
+    },
+    
     destroyed () {
       this.distroy();
     }

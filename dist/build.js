@@ -562,7 +562,7 @@ __$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;
 
 var uid = 0;
 
-var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
+var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
   name: 'v-folder',
   mixins: [EventMixin],
   props: {
@@ -706,6 +706,33 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
       }).then(function (res) { return this$1.$emit('choose', res); });
     });
   },
+  
+  mounted: function mounted() {
+    var this$1 = this;
+
+    this.$nextTick(function () {
+      var el = this$1.$refs("container");
+      var gcs = getComputedStyle;
+      var pi = parseInt;
+      var getHeight = function (el) { return pi(gcs(el).height); };
+      var minWidth = pi(gcs(el).width);
+      var maxWidth = 500;
+      var center = (minWidth+maxWidth)/2;
+      
+      var standardHeight = getHeight(el);
+      do {
+        el.style.width = center+"px";
+        var temp = getHeight(el);
+        if( temp < standardHeight ) {
+          minWidth = center;
+        } else {
+          maxWidth = center;
+        }
+        center = (minWidth+maxWidth)/2;
+      } while (maxWidth-minWidth > 4);
+    });
+  },
+  
   destroyed: function destroyed () {
     this.distroy();
   }
