@@ -25,14 +25,15 @@
       uid: {
         type: [String, Number],
         required: true
-      }
+      },
+      canChosen: Boolean
     },
     computed: {
       className() {
         return classNames[this.data.check + 1];
       },
       isChosen() {
-        return (this.data.chosen ? "chosen " : "")+"v-leaf";
+        return (this.data.chosen&&this.canChosen ? "chosen " : "")+"v-leaf";
       }
     }
   };

@@ -525,19 +525,20 @@ var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
     uid: {
       type: [String, Number],
       required: true
-    }
+    },
+    canChosen: Boolean
   },
   computed: {
     className: function className() {
       return classNames$1[this.data.check + 1];
     },
     isChosen: function isChosen() {
-      return (this.data.chosen ? "chosen " : "")+"v-leaf";
+      return (this.data.chosen&&this.canChosen ? "chosen " : "")+"v-leaf";
     }
   }
 };
 
-var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.node.level,staticClass:"v-branch"},[_c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"data":_vm.data.node,"uid":_vm.uid}}),_vm._l((_vm.data.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.data.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":leaf,"uid":_vm.uid}})})],2)])},staticRenderFns: [],
+var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.node.level,staticClass:"v-branch"},[_c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"canchosen":_vm.canChosen,"data":_vm.data.node,"uid":_vm.uid}}),_vm._l((_vm.data.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":branch,"uid":_vm.uid,"canchosen":_vm.canChosen}})}),_vm._l((_vm.data.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":leaf,"uid":_vm.uid,"canchosen":_vm.canChosen}})})],2)])},staticRenderFns: [],
   name: 'v-branch',
   mixins: [EventMixin],
   props: {
@@ -548,7 +549,8 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
     uid: {
       type: [String, Number],
       required: true
-    }
+    },
+    canChosen: Boolean
   },
   components: {
     'v-node': VNode,
@@ -560,13 +562,17 @@ __$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;
 
 var uid = 0;
 
-var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
+var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"canchosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"canchosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"canchosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
   name: 'v-folder',
   mixins: [EventMixin],
   props: {
     data: Object,
     ajax: Object,
-    conf: Object
+    conf: Object,
+    nowChosen: {
+      type: [String, Number],
+      required: true
+    }
   },
   components: {
     'v-node': VNode,
@@ -582,6 +588,7 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     }
   },
   data: function data() {
+    console.log(uid);
     return {
       uid: uid++,
       store: new Store(this.data, this.conf)
@@ -600,6 +607,9 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     },
     node: function node() {
       return this.root.node;
+    },
+    canChosen: function canChosen() {
+      return this.nowChosen === this.uid;
     }
   },
   
@@ -690,7 +700,10 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
 
     });
     this.listen('choose', function (node) {
-      this$1.store.commit('choose', node).then(function (res) { return this$1.$emit('choose', res); });
+      this$1.store.commit('choose', {
+        node: node,
+        nowChosen: this$1.nowChosen
+      }).then(function (res) { return this$1.$emit('choose', res); });
     });
   },
   destroyed: function destroyed () {

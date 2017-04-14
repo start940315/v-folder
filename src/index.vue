@@ -1,8 +1,8 @@
 <template>
   <ul class="v-branch-body">
-    <v-node :data="node" :uid="uid"></v-node>
-    <v-branch v-show="node.open" v-for="branch in branches" :data="branch" :uid="uid"></v-branch>
-    <v-leaf v-show="node.open" v-for="leaf in leafs" :data="leaf" :uid="uid"></v-leaf>
+    <v-node :canChosen="canChosen" :data="node" :uid="uid"></v-node>
+    <v-branch v-show="node.open" v-for="branch in branches" :canChosen="canChosen" :data="branch" :uid="uid"></v-branch>
+    <v-leaf v-show="node.open" v-for="leaf in leafs" :canChosen="canChosen" :data="leaf" :uid="uid"></v-leaf>
   </ul>
 </template>
 <script>
@@ -21,7 +21,11 @@
     props: {
       data: Object,
       ajax: Object,
-      conf: Object
+      conf: Object,
+      nowChosen: {
+        type: [String, Number],
+        required: true
+      }
     },
     components: {
       'v-node': VNode,
@@ -37,6 +41,7 @@
       }
     },
     data() {
+      console.log(uid);
       return {
         uid: uid++,
         store: new Store(this.data, this.conf)
@@ -55,6 +60,9 @@
       },
       node() {
         return this.root.node;
+      },
+      canChosen() {
+        return this.nowChosen === this.uid;
       }
     },
     
@@ -135,7 +143,10 @@
 
       });
       this.listen('choose', node => {
-        this.store.commit('choose', node).then(res => this.$emit('choose', res));
+        this.store.commit('choose', {
+          node,
+          nowChosen: this.nowChosen
+        }).then(res => this.$emit('choose', res));
       });
     },
     destroyed () {
