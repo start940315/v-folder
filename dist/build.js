@@ -570,15 +570,14 @@ var uid = 0;
     var maxWidth = 500;
     var standardHeight = getHeight(el);
     var center = (minWidth+maxWidth)/2;
-    el.style.width = center+"px";
+    el.style.width = maxWidth+"px";
     function setWidth () {
       var temp = getHeight(el);
 //      console.log(temp, minWidth, maxWidth, center, standardHeight)
-      if( temp < standardHeight ) {
-        standardHeight = temp;
-        maxWidth = center;
-      } else {
+      if( temp > standardHeight ) {
         minWidth = center;
+      } else {
+        maxWidth = center;
       }
       if(maxWidth-minWidth > 1) {
         center = (minWidth+maxWidth)/2;
