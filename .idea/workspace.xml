@@ -29,8 +29,8 @@
       <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
+            <state relative-caret-position="318">
+              <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
               <folding>
                 <element signature="e#390#418#0" expanded="true" />
                 <element signature="e#1697#2005#0" expanded="false" />
@@ -262,7 +262,7 @@
       <workItem from="1491564979370" duration="129000" />
       <workItem from="1491966473955" duration="556000" />
       <workItem from="1491971528705" duration="10593000" />
-      <workItem from="1492137775581" duration="3182000" />
+      <workItem from="1492137775581" duration="3462000" />
     </task>
     <task id="LOCAL-00001" summary="add title and change style">
       <created>1491973602510</created>
@@ -275,7 +275,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24737000" />
+    <option name="totallyTimeSpent" value="25017000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -689,8 +689,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
+        <state relative-caret-position="318">
+          <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
           <folding>
             <element signature="e#390#418#0" expanded="true" />
             <element signature="e#1697#2005#0" expanded="false" />

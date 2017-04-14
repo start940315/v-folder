@@ -169,6 +169,7 @@
           } else {
             maxWidth = center;
           }
+          console.log(center);
           center = (minWidth+maxWidth)/2;
         } while (maxWidth-minWidth > 4);
       })
