@@ -150,10 +150,6 @@
       });
     },
     
-    mounted() {
-      this.$emit('fold');
-    },
-    
     destroyed () {
       this.distroy();
     }
