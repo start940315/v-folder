@@ -295,13 +295,13 @@ Store.prototype.checkBranchDescendents = function checkBranchDescendents (branch
 };
 
 /************************************************************************
- * * * * * * * * * * * * Public Method Below * * * * * * * * * * * * * * 
+ * * * * * * * * * * * * Public Method Below * * * * * * * * * * * * * *
  ************************************************************************/
 /**
  * if one node is checked/unchecked,
  * we have to check/uncheck all ites descendents,
  * and find if its ascendents should be checked.
- * 
+ *
  * @param levellevel of the node checked/unchecked
  */
 Store.prototype.checkNode = function checkNode (node) {
@@ -319,7 +319,7 @@ Store.prototype.checkNode = function checkNode (node) {
  * if a leaf is checked,
  * we have to check all its ascendents
  * to see if any should get checked to.
- * 
+ *
  * @param leaf
  */
 Store.prototype.checkLeaf = function checkLeaf (leaf) {
