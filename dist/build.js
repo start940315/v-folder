@@ -675,8 +675,7 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     this.listen('unfold', function (node) {
       if (node.open && node.canOpen) {
         node.open =! node.open;
-        console.log("in");
-        adjustWidth(this$1.$refs["container"], this$1);
+        this$1.$emit('fold');
         return;
       }
 
@@ -706,6 +705,10 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
         nowChosen: this$1.nowChosen
       }).then(function (res) { return this$1.$emit('choose', res); });
     });
+  },
+  
+  mounted: function mounted() {
+    this.$emit('fold');
   },
   
   destroyed: function destroyed () {

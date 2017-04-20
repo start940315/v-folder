@@ -118,8 +118,7 @@
       this.listen('unfold', node => {
         if (node.open && node.canOpen) {
           node.open =! node.open;
-          console.log("in");
-          adjustWidth(this.$refs["container"], this);
+          this.$emit('fold');
           return;
         }
 
@@ -149,6 +148,10 @@
           nowChosen: this.nowChosen
         }).then(res => this.$emit('choose', res));
       });
+    },
+    
+    mounted() {
+      this.$emit('fold');
     },
     
     destroyed () {

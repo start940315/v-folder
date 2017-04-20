@@ -384,7 +384,10 @@ Store.prototype.commit = function commit (action, elem) {
     var isNode = elem.type === 'node';
     if (action === 'change') {
         this$1[isNode ? 'checkNode' : 'checkLeaf'](elem);
-        return resolve(this$1.getPathResult());
+        return resolve({
+          path: this$1.getPathResult(),
+          id: this$1.conf.id
+        });
     }
 
     if (action === 'unfold' && isNode) {
@@ -404,7 +407,10 @@ Store.prototype.commit = function commit (action, elem) {
         this$1.lastChosen.chosen = false;
       }
       this$1.lastChosen = elem;
-      resolve(elem.path);
+      resolve({
+        path: elem.path,
+        id: this$1.conf.id
+      });
     }
   });
 };
@@ -468,7 +474,7 @@ var classNames = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-node"},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',[_c('i',{staticClass:"fa",class:_vm.checkboxClass,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])])},staticRenderFns: [],
+var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,class:_vm.isChosen},[_c('i',{staticClass:"fa",class:_vm.folderClass,on:{"click":function($event){_vm.notify('unfold');}}}),_vm._v(" "),_c('span',[_c('i',{staticClass:"fa",class:_vm.checkboxClass,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])])},staticRenderFns: [],
   name: 'v-node',
   mixins: [EventMixin],
   props: {
@@ -498,7 +504,7 @@ var VNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
       return classNames[this.data.check + 1];
     },
     isChosen: function isChosen() {
-      return this.data.chosen ? "chosen" : "";
+      return (this.data.chosen ? "chosen " : "") + "v-node";
     }
   }
 };
@@ -508,7 +514,7 @@ var classNames$1 = [
   'fa-minus-square-o',
   'fa-check-square-o' ];
 
-var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,staticClass:"v-leaf"},[_c('i',{staticClass:"fa",class:_vm.className,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{class:_vm.isChosen,on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
+var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.level,class:_vm.isChosen},[_c('i',{staticClass:"fa",class:_vm.className,on:{"click":function($event){_vm.notify('change');}}}),_vm._v(" "),_c('span',{attrs:{"title":_vm.data.name},on:{"click":function($event){_vm.notify('choose');}}},[_vm._v(_vm._s(_vm.data.name))])])},staticRenderFns: [],
   name: 'v-leaf',
   mixins: [EventMixin],
   props: {
@@ -519,19 +525,20 @@ var VLeaf = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
     uid: {
       type: [String, Number],
       required: true
-    }
+    },
+    canChosen: Boolean
   },
   computed: {
     className: function className() {
       return classNames$1[this.data.check + 1];
     },
     isChosen: function isChosen() {
-      return this.data.chosen ? "chosen" : "";
+      return (this.data.chosen&&this.canChosen ? "chosen " : "")+"v-leaf";
     }
   }
 };
 
-var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.node.level,staticClass:"v-branch"},[_c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"data":_vm.data.node,"uid":_vm.uid}}),_vm._l((_vm.data.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.data.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":leaf,"uid":_vm.uid}})})],2)])},staticRenderFns: [],
+var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{key:_vm.data.node.level,staticClass:"v-branch"},[_c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.data.node,"uid":_vm.uid}}),_vm._l((_vm.data.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":branch,"uid":_vm.uid,"can-chosen":_vm.canChosen}})}),_vm._l((_vm.data.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.data.node.open),expression:"data.node.open"}],key:_vm.data.node.name,attrs:{"data":leaf,"uid":_vm.uid,"can-chosen":_vm.canChosen}})})],2)])},staticRenderFns: [],
   name: 'v-branch',
   mixins: [EventMixin],
   props: {
@@ -542,7 +549,8 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
     uid: {
       type: [String, Number],
       required: true
-    }
+    },
+    canChosen: Boolean
   },
   components: {
     'v-node': VNode,
@@ -550,17 +558,21 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
   }
 };
 
-__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{line-height:1.2em;padding:0 0 0 18px;vertical-align:middle}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;line-height:1.2em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{padding:2px 3px;font-size:16px!important;line-height:1.2!important}i{padding:2px 0}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:#f7c0c0;border-radius:3px}i,i:before,span{vertical-align:middle}",undefined);
+__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{width:100%;height:22.4px;line-height:1.4px;padding:0 0 0 18px;vertical-align:middle;word-wrap:break-word;word-break:break-all;overflow:hidden;text-overflow:ellipsis}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;height:1.4em;line-height:1.4em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{font-size:16px!important;line-height:1.4!important}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:hsla(0,0%,100%,.2)}.chosen span{color:#fff}i,i:before,span{vertical-align:middle}",undefined);
 
 var uid = 0;
 
-var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{staticClass:"v-branch-body"},[_c('v-node',{attrs:{"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
+var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
   name: 'v-folder',
   mixins: [EventMixin],
   props: {
     data: Object,
     ajax: Object,
-    conf: Object
+    conf: Object,
+    nowChosen: {
+      type: [String, Number],
+      required: true
+    }
   },
   components: {
     'v-node': VNode,
@@ -594,6 +606,9 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     },
     node: function node() {
       return this.root.node;
+    },
+    canChosen: function canChosen() {
+      return this.nowChosen === this.uid;
     }
   },
   
@@ -660,6 +675,8 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     this.listen('unfold', function (node) {
       if (node.open && node.canOpen) {
         node.open =! node.open;
+        this$1.$emit('fold');
+        adjustWidth(this$1.$refs["container"], this$1);
         return;
       }
 
@@ -684,9 +701,13 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
 
     });
     this.listen('choose', function (node) {
-      this$1.store.commit('choose', node).then(function (res) { return this$1.$emit('choose', res); });
+      this$1.store.commit('choose', {
+        node: node,
+        nowChosen: this$1.nowChosen
+      }).then(function (res) { return this$1.$emit('choose', res); });
     });
   },
+  
   destroyed: function destroyed () {
     this.distroy();
   }
