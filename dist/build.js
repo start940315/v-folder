@@ -558,201 +558,160 @@ var VBranch = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=
   }
 };
 
-__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{line-height:1.4em;padding:0 0 0 18px;vertical-align:middle;word-wrap:break-word;word-break:break-all}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;line-height:1.4em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{font-size:16px!important;line-height:1.4!important}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:hsla(0,0%,100%,.2)}.chosen span{color:#fff}i,i:before,span{vertical-align:middle}",undefined);
+__$styleInject(".v-branch-body{padding:0;font-size:0;color:#666;list-style:none;text-align:left}.v-branch-body>.v-branch{padding-left:18px}.v-branch>ul{margin:0;padding:0;list-style:none}.v-leaf,.v-node{width:100%;height:1.4em;line-height:1.4em;padding:0 0 0 18px;vertical-align:middle;word-wrap:break-word;word-break:break-all;overflow:hidden;text-overflow:ellipsis}.v-leaf{margin-left:18px}.v-leaf>.fa,.v-node>.fa,.v-node>span>.fa{width:18px;height:1.4em;line-height:1.4em;color:#0d83e6;text-align:center;cursor:pointer}.v-leaf>span,.v-node>span{cursor:pointer}.v-leaf>span,.v-node>span span,i{font-size:16px!important;line-height:1.4!important}.v-leaf .fa:hover,.v-node .fa:hover{color:#0c71c5}.v-node>.cursor-no-ops{cursor:not-allowed}.v-node>.cursor-progress{cursor:progress}.chosen{background-color:hsla(0,0%,100%,.2)}.chosen span{color:#fff}i,i:before,span{vertical-align:middle}",undefined);
 
 var uid = 0;
-  
-  function adjustWidth (el, self) {
-    var gcs = getComputedStyle;
-    var pi = parseInt;
-    var getHeight = function (el) { return pi(gcs(el).height); };
-    var minWidth = 0;
-    var maxWidth = 500;
-    el.style.width = maxWidth+"px";
-    var standardHeight = 0;
-    var center = (minWidth+maxWidth)/2;
-    var minHeight = 10000000000;
-    function setWidth () {
-      var temp = getHeight(el);
-//      console.log(temp, minWidth, maxWidth, center, standardHeight)
-      if( temp > minHeight ) {
-        minWidth = center;
-      } else {
-        if( temp < standardHeight ) {
-          minWidth = center;
-        } else {
-          maxWidth = center;
-        }
-        minHeight = temp;
-      }
-      if(maxWidth-minWidth > 1) {
-        center = (minWidth+maxWidth)/2;
-        el.style.width = center+"px";
-        self.$nextTick(setWidth);
+
+var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
+  name: 'v-folder',
+  mixins: [EventMixin],
+  props: {
+    data: Object,
+    ajax: Object,
+    conf: Object,
+    nowChosen: {
+      type: [String, Number],
+      required: true
+    }
+  },
+  components: {
+    'v-node': VNode,
+    'v-leaf': VLeaf,
+    'v-branch': VBranch
+  },
+  watch: {
+    data: function data(newVal, oldVal) {
+      var nameKey = this.conf && this.conf.node || 'name';
+      if (newVal[nameKey] !== oldVal[nameKey]) {
+        this.store = new Store(newVal, this.conf);
       }
     }
-    self.$nextTick(function () {
-      standardHeight = getHeight(el);
-      el.style.width = center+"px";
-      self.$nextTick(setWidth);
-    });
-  }
+  },
+  data: function data() {
+    return {
+      uid: uid++,
+      store: new Store(this.data, this.conf)
+    };
+  },
 
-  var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{ref:"container",staticClass:"v-branch-body"},[_c('v-node',{attrs:{"can-chosen":_vm.canChosen,"data":_vm.node,"uid":_vm.uid}}),_vm._l((_vm.branches),function(branch){return _c('v-branch',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":branch,"uid":_vm.uid}})}),_vm._l((_vm.leafs),function(leaf){return _c('v-leaf',{directives:[{name:"show",rawName:"v-show",value:(_vm.node.open),expression:"node.open"}],attrs:{"can-chosen":_vm.canChosen,"data":leaf,"uid":_vm.uid}})})],2)},staticRenderFns: [],
-    name: 'v-folder',
-    mixins: [EventMixin],
-    props: {
-      data: Object,
-      ajax: Object,
-      conf: Object,
-      nowChosen: {
-        type: [String, Number],
-        required: true
+  computed: {
+    root: function root() {
+      return this.store.dataStore;
+    },
+    branches: function branches() {
+      return this.root.branches;
+    },
+    leafs: function leafs() {
+      return this.root.leafs;
+    },
+    node: function node() {
+      return this.root.node;
+    },
+    canChosen: function canChosen() {
+      return this.nowChosen === this.uid;
+    }
+  },
+  
+  methods: {
+    resTransform: function resTransform(data, node) {
+      var conf = this.conf || {};
+      var dirKey  = conf['branch'] || 'dirs';
+      var fileKey = conf['leaf'] || 'files';
+      var nameKey = conf['node'] || 'name';
+
+      data[nameKey] = node.name;
+      data[dirKey]  = data[dirKey].map(function (d) { return (( obj = {}, obj[nameKey] = d, obj ))
+        var obj; });
+      return data;
+    },
+
+    getReqConf: function getReqConf(node) {
+      var reqConf = this.ajax || {};
+      var url = reqConf.url;
+      var method = reqConf.method;
+      var data = reqConf.data;
+      var params = reqConf.params;
+      var pathAs = reqConf.pathAs;
+      var headers = reqConf.headers;
+
+      if (method || method.toUpperCase() === 'GET') {
+        reqConf.params = (params || {});
+        reqConf.params[pathAs] = node.path;
+      } else {
+        reqConf.data = (data || {});
+        reqConf.data[pathAs] = node.path;
       }
-    },
-    components: {
-      'v-node': VNode,
-      'v-leaf': VLeaf,
-      'v-branch': VBranch
-    },
-    watch: {
-      data: function data(newVal, oldVal) {
-        var nameKey = this.conf && this.conf.node || 'name';
-        if (newVal[nameKey] !== oldVal[nameKey]) {
-          this.store = new Store(newVal, this.conf);
-        }
-      }
-    },
-    data: function data() {
-      console.log(uid);
-      return {
-        uid: uid++,
-        store: new Store(this.data, this.conf)
-      };
+
+      reqConf.method = method || 'GET';
+      reqConf.headers = headers || {};
+
+      return reqConf;
     },
 
-    computed: {
-      root: function root() {
-        return this.store.dataStore;
-      },
-      branches: function branches() {
-        return this.root.branches;
-      },
-      leafs: function leafs() {
-        return this.root.leafs;
-      },
-      node: function node() {
-        return this.root.node;
-      },
-      canChosen: function canChosen() {
-        return this.nowChosen === this.uid;
-      }
-    },
-    
-    methods: {
-      resTransform: function resTransform(data, node) {
-        var conf = this.conf || {};
-        var dirKey  = conf['branch'] || 'dirs';
-        var fileKey = conf['leaf'] || 'files';
-        var nameKey = conf['node'] || 'name';
-
-        data[nameKey] = node.name;
-        data[dirKey]  = data[dirKey].map(function (d) { return (( obj = {}, obj[nameKey] = d, obj ))
-          var obj; });
-        return data;
-      },
-
-      getReqConf: function getReqConf(node) {
-        var reqConf = this.ajax || {};
-        var url = reqConf.url;
-        var method = reqConf.method;
-        var data = reqConf.data;
-        var params = reqConf.params;
-        var pathAs = reqConf.pathAs;
-        var headers = reqConf.headers;
-
-        if (method || method.toUpperCase() === 'GET') {
-          reqConf.params = (params || {});
-          reqConf.params[pathAs] = node.path;
-        } else {
-          reqConf.data = (data || {});
-          reqConf.data[pathAs] = node.path;
-        }
-
-        reqConf.method = method || 'GET';
-        reqConf.headers = headers || {};
-
-        return reqConf;
-      },
-
-      request: function request(node) {
-        var this$1 = this;
-
-        if (!this.ajax) {
-          return Promise.reject('ajax:false');
-        }
-
-        var process = this.ajax.process || (function (res) { return res; });
-
-        return this.$http(this.getReqConf(node))
-          .then(function (res) {
-            var data = process(res.data);
-            return this$1.resTransform(data, node);
-          });
-      }
-    },
-
-    created: function created() {
+    request: function request(node) {
       var this$1 = this;
 
-      this.listen('change', function (node) {
-        this$1.store.commit('change', node).then(function (res) { return this$1.$emit('change', res); });
-      });
+      if (!this.ajax) {
+        return Promise.reject('ajax:false');
+      }
 
-      this.listen('unfold', function (node) {
-        if (node.open && node.canOpen) {
-          node.open =! node.open;
-          console.log("in");
-          adjustWidth(this$1.$refs["container"], this$1);
-          return;
-        }
+      var process = this.ajax.process || (function (res) { return res; });
 
-        this$1.store.commit('unfold', node)
-          .then(function () {
-
-            this$1.request(node)
-            .then(function (data) {
-              if (data) {
-                this$1.store.merge(data, node);
-              } else {
-                throw 'empty';
-              }
-            })
-            .catch(function (e) {
-              node.status = 'empty';
-              window.console && console.error(e);
-            });
-
-          })
-          .catch(function (e) { return node.status = 'done'; });
-
-      });
-      this.listen('choose', function (node) {
-        this$1.store.commit('choose', {
-          node: node,
-          nowChosen: this$1.nowChosen
-        }).then(function (res) { return this$1.$emit('choose', res); });
-      });
-    },
-    
-    mounted: function mounted() {
-      adjustWidth(this.$refs["container"], this);
-    },
-    
-    destroyed: function destroyed () {
-      this.distroy();
+      return this.$http(this.getReqConf(node))
+        .then(function (res) {
+          var data = process(res.data);
+          return this$1.resTransform(data, node);
+        });
     }
-  };
+  },
+
+  created: function created() {
+    var this$1 = this;
+
+    this.listen('change', function (node) {
+      this$1.store.commit('change', node).then(function (res) { return this$1.$emit('change', res); });
+    });
+
+    this.listen('unfold', function (node) {
+      if (node.open && node.canOpen) {
+        node.open =! node.open;
+        console.log("in");
+        adjustWidth(this$1.$refs["container"], this$1);
+        return;
+      }
+
+      this$1.store.commit('unfold', node)
+        .then(function () {
+
+          this$1.request(node)
+          .then(function (data) {
+            if (data) {
+              this$1.store.merge(data, node);
+            } else {
+              throw 'empty';
+            }
+          })
+          .catch(function (e) {
+            node.status = 'empty';
+            window.console && console.error(e);
+          });
+
+        })
+        .catch(function (e) { return node.status = 'done'; });
+
+    });
+    this.listen('choose', function (node) {
+      this$1.store.commit('choose', {
+        node: node,
+        nowChosen: this$1.nowChosen
+      }).then(function (res) { return this$1.$emit('choose', res); });
+    });
+  },
+  
+  destroyed: function destroyed () {
+    this.distroy();
+  }
+};
 
 var eventMix = function (Vue) {
   var hub = new Vue();

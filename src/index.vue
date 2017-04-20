@@ -14,42 +14,6 @@
   import styles from './styles.css';
 
   let uid = 0;
-  
-  function adjustWidth (el, self) {
-    var gcs = getComputedStyle;
-    var pi = parseInt;
-    var getHeight = (el) => pi(gcs(el).height);
-    var minWidth = 0;
-    var maxWidth = 500;
-    el.style.width = maxWidth+"px";
-    var standardHeight = 0;
-    var center = (minWidth+maxWidth)/2;
-    var minHeight = 10000000000;
-    function setWidth () {
-      var temp = getHeight(el);
-//      console.log(temp, minWidth, maxWidth, center, standardHeight)
-      if( temp > minHeight ) {
-        minWidth = center;
-      } else {
-        if( temp < standardHeight ) {
-          minWidth = center;
-        } else {
-          maxWidth = center;
-        }
-        minHeight = temp;
-      }
-      if(maxWidth-minWidth > 1) {
-        center = (minWidth+maxWidth)/2;
-        el.style.width = center+"px";
-        self.$nextTick(setWidth);
-      }
-    }
-    self.$nextTick(() => {
-      standardHeight = getHeight(el);
-      el.style.width = center+"px";
-      self.$nextTick(setWidth);
-    })
-  }
 
   export default {
     name: 'v-folder',
@@ -77,7 +41,6 @@
       }
     },
     data() {
-      console.log(uid);
       return {
         uid: uid++,
         store: new Store(this.data, this.conf)
@@ -186,10 +149,6 @@
           nowChosen: this.nowChosen
         }).then(res => this.$emit('choose', res));
       });
-    },
-    
-    mounted() {
-      adjustWidth(this.$refs["container"], this);
     },
     
     destroyed () {
