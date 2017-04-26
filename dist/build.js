@@ -410,7 +410,7 @@ Store.prototype.commit = function commit (action, elem) {
       return resolve({
         path: elem.node.path,
         index: elem.uid,
-        type: this$1.conf.type
+        type: this$1.conf.id.type
       });
     }
     return reject();

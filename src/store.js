@@ -244,7 +244,7 @@ export default class Store {
         return resolve({
           path: elem.node.path,
           index: elem.uid,
-          type: this.conf.type
+          type: this.conf.id.type
         });
       }
       return reject();
