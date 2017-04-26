@@ -571,10 +571,7 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     data: Object,
     ajax: Object,
     conf: Object,
-    nowChosen: {
-      type: [String, Number],
-      required: true
-    }
+    nowChosen: Number
   },
   components: {
     'v-node': VNode,

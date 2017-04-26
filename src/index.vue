@@ -22,10 +22,7 @@
       data: Object,
       ajax: Object,
       conf: Object,
-      nowChosen: {
-        type: [String, Number],
-        required: true
-      }
+      nowChosen: Number
     },
     components: {
       'v-node': VNode,
