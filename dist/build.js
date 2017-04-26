@@ -409,7 +409,8 @@ Store.prototype.commit = function commit (action, elem) {
       this$1.lastChosen = elem.node;
       return resolve({
         path: elem.node.path,
-        id: elem.nowChosen
+        index: elem.uid,
+        type: this$1.conf.type
       });
     }
     return reject();
@@ -703,7 +704,7 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     this.listen('choose', function (node) {
       this$1.store.commit('choose', {
         node: node,
-        nowChosen: this$1.uid
+        uid: this$1.uid
       }).then(function (res) { return this$1.$emit('choose', res); });
     });
   },
