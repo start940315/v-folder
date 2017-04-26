@@ -243,7 +243,8 @@ export default class Store {
         this.lastChosen = elem.node;
         return resolve({
           path: elem.node.path,
-          id: elem.nowChosen
+          index: elem.uid,
+          type: this.conf.type
         });
       }
       return reject();
