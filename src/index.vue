@@ -145,7 +145,7 @@
       this.listen('choose', node => {
         this.store.commit('choose', {
           node,
-          nowChosen: this.nowChosen
+          nowChosen: this.uid
         }).then(res => this.$emit('choose', res));
       });
     },

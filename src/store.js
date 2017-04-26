@@ -229,23 +229,24 @@ export default class Store {
 
         if (!elem.canOpen && elem.status !== 'done') {
           elem.status = 'loading';
-          resolve();
+          return resolve();
         } else {
-          reject();
+          return reject();
         }
       }
       
-      if (action === 'choose') {
-        elem.chosen = true;
+      if (action === 'choose' && !isNode) {
+        elem.node.chosen = true;
         if (this.lastChosen) {
           this.lastChosen.chosen = false;
         }
-        this.lastChosen = elem;
-        resolve({
-          path: elem.path,
-          id: this.conf.id
+        this.lastChosen = elem.node;
+        return resolve({
+          path: elem.node.path,
+          id: elem.nowChosen
         });
       }
+      return reject();
     });
   }
 

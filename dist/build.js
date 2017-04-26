@@ -395,23 +395,24 @@ Store.prototype.commit = function commit (action, elem) {
 
       if (!elem.canOpen && elem.status !== 'done') {
         elem.status = 'loading';
-        resolve();
+        return resolve();
       } else {
-        reject();
+        return reject();
       }
     }
       
-    if (action === 'choose') {
-      elem.chosen = true;
+    if (action === 'choose' && !isNode) {
+      elem.node.chosen = true;
       if (this$1.lastChosen) {
         this$1.lastChosen.chosen = false;
       }
-      this$1.lastChosen = elem;
-      resolve({
-        path: elem.path,
-        id: this$1.conf.id
+      this$1.lastChosen = elem.node;
+      return resolve({
+        path: elem.node.path,
+        id: elem.nowChosen
       });
     }
+    return reject();
   });
 };
 
@@ -702,13 +703,9 @@ var VFolderComp$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;v
     this.listen('choose', function (node) {
       this$1.store.commit('choose', {
         node: node,
-        nowChosen: this$1.nowChosen
+        nowChosen: this$1.uid
       }).then(function (res) { return this$1.$emit('choose', res); });
     });
-  },
-  
-  mounted: function mounted() {
-    this.$emit('fold');
   },
   
   destroyed: function destroyed () {
